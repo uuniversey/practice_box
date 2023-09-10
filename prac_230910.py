@@ -1,10 +1,9 @@
 
+import sys
+sys.stdin = open('wj.txt', 'r')
+
 
 # 백준. 1260 DFS와 BFS
-
-# import sys
-# sys.stdin = open('wj.txt', 'r')
-#
 #
 # def dfs(adj_l, s):
 #     for j in adj_l[s]:
@@ -48,6 +47,28 @@
 # print(*result[1:])
 
 
-
 # 백준. 17471 게리맨더링
 
+from collections import deque
+
+def bfs(adj_l, s):
+    deq = deque([s])
+    vstd[s] = 1
+    while deq:
+        t = deq.popleft()
+        for j in adj_l[t]:
+            if vstd[j] == 0:
+                vstd[j] = vstd[t] + 1
+                deq.append(j)
+
+
+N = int(input())
+citizen = list(map(int, input().split()))
+adj_l = [[] for _ in range(N+1)]
+vstd = [0] * (N+1)
+for i in range(1, N+1):
+    adj_l[i] = list(map(int, input().split()))[1:]
+
+bfs(adj_l, 1)
+
+print()
