@@ -3,50 +3,6 @@
 import sys
 sys.stdin = open('test.txt')
 
-# from collections import deque
-#
-# N, K = map(int, input().split())
-# Belt = list(map(int, input().split()))
-# Belt = deque(Belt)
-#
-# result = 1
-# robots = deque([])
-# while True:
-#     # 1
-#     tmp = Belt.pop()
-#     Belt.appendleft(tmp)
-#     for robot in robots:
-#         if robot[1] != 0:
-#             robot[0] += 1
-#             if robot[0] == N-1:
-#                 robot[1] = 0
-#
-#     # 2
-#     if robots:
-#         for i in range(len(robots)):
-#             if robots[i][1] == 1:
-#                 if Belt[robots[i][0] + 1] != 0:
-#                     Belt[robots[i][0] + 1] -= 1
-#                     robots[i][0] += 1
-#                     if robots[i][0] == N-1:
-#                         robots[i][1] = 0
-#
-#     # 3
-#     if Belt[0] != 0:
-#         robots.append([0, 1])
-#         Belt[0] -= 1
-#
-#     # 4
-#     num = Belt.count(0)
-#     if num >= K:
-#         break
-#     else:
-#         print(result, Belt)
-#         result += 1
-#
-# print(result)
-
-
 from collections import deque
 
 N, K = map(int, input().split())
@@ -55,30 +11,32 @@ Belt = deque(Belt)
 
 result = 1
 robots = deque([0] * N)
-
 while True:
-    # 1
+    # 1. 벨트가 각 칸 위에 있는 로봇과 함께 한 칸 회전
     Belt.rotate(1)
     robots.rotate(1)
-    robots[N-1] = 0  # 로봇이 벨트 끝에 도달하면 제거
+    robots[N-1] = 0
 
-    # 2
+    # 2. 가장 먼저 벨트에 올라간 로봇부터, 벨트가 회전하는 방향으로 한 칸 이동할 수 있다면
+    # 이동한다. 만약 이동할 수 없다면(이동하려는 칸에 로봇이 있거나 칸 내구도가 없다면) 가만히 있는다.
     for i in range(N-2, -1, -1):
-        if robots[i] == 1 and robots[i+1] == 0 and Belt[i+1] > 0:
+        if robots[i] and robots[i+1] == 0 and Belt[i+1]:
             robots[i] = 0
             robots[i+1] = 1
             Belt[i+1] -= 1
-    robots[N-1] = 0  # 로봇이 벨트 끝에 도달하면 제거
+    robots[N-1] = 0
 
-    # 3
-    if robots[0] == 0 and Belt[0] > 0:
+    # 3. 올리는 위치에 있는 칸의 내구도가 0이 아니면 올리는 위치에 로봇을 올린다.
+    if Belt[0] != 0:
         robots[0] = 1
         Belt[0] -= 1
 
-    # 4
-    if Belt.count(0) >= K:
+    # 4. 내구도가 0인 칸의 개수가 K개 이상이라면 과정을 종료한다. 그렇지 않다면 1번으로 돌아간다.
+    num = Belt.count(0)
+    if num >= K:
         break
-    result += 1
+    else:
+        result += 1
 
 print(result)
 
