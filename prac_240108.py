@@ -7,9 +7,6 @@ def dfs(k, num, parent):
         if not vstd[j]:
             vstd[j] = num
             dfs(j, num, k)
-        else:
-            if j != parent:
-                istree[j] = 1
 
 while True:
     n, m = map(int, input().split())
