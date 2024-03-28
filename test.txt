@@ -1,2 +1,7 @@
-A
-BAA
+3 4 3
+abcb
+bcaa
+abac
+aba
+abc
+cab
